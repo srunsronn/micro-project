@@ -15,7 +15,8 @@ void main() {
   print("Enter Last Name: ");
   lastName = stdin.readLineSync();
 
-  Participant participant = Participant(firstName!, lastName!, 0, DateTime.now());
+  Participant participant =
+      Participant(firstName!, lastName!, 0, DateTime.now());
 
   quiz.addNewParticipant(participant);
 
@@ -28,7 +29,7 @@ void main() {
   int points = 0;
   for (var question in quiz.questions) {
     points += question.point;
-    
+
     print(question.title);
     question.optionAns.forEach((option) => print(option));
 
@@ -78,6 +79,9 @@ void main() {
   print(points);
   participant.getOverall(points);
 
-  print(participant.startTime);
   
+
+  File file = File("participantInfo.txt");
+  file.writeAsString(
+      "Participant: ${participant.firstName} ${participant.lastName}\n Time: ${participant.startTime}\n Overall: ${participant.getOverall(points)}\n");
 }

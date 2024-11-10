@@ -10,8 +10,8 @@ class Participant {
     totalScore +=score;
   }
 
-  void getOverall(int points) {
-    print("Overall: $totalScore / $points");
+  String getOverall(int points) {
+    return "$totalScore / $points";
   }
   
   

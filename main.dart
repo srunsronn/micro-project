@@ -17,7 +17,7 @@ void main() {
   lastName = stdin.readLineSync();
 
   Participant participant =
-      Participant(firstName!, lastName!, 0, DateTime.now());
+    Participant(firstName!, lastName!, 0, DateTime.now());
 
   quiz.addNewParticipant(participant);
 
@@ -29,7 +29,6 @@ void main() {
     MultipleAnswers("Find sum of 1 to 10 and average of sum", 
     ["1. 100","2. 50","3. 55", "4. 5.5"], 5,0, [3,4]));
 
-  int score = 0;
   int points = 0;
   for (var question in quiz.questions) {
     points += question.point;
@@ -43,7 +42,7 @@ void main() {
 
       if (question.isCorrectAnswer(selected)) {
         question.gotPoint = question.point;
-        participant.updateScore(score);
+        participant.updateScore(question.gotPoint);
         // I should add update score for each question 
         //int point = question.point;
         String scores = "${question.gotPoint} / ${question.point}";
@@ -81,21 +80,23 @@ void main() {
       }
     }
   }
-  print(points);
-  participant.getOverall(points);
+  // print(points);
+  // participant.getOverall(points);
 
-  // we should put the result of this loop in toString for save in text file
-  int i=0;
-  for(var questions in quiz.questions){
-  print("${i+1}. ${questions.title} - Score: ${questions.gotPoint}/${questions.point}");
-  i++;
-  }
 
   String toString(){
-    return("Participant: ${participant.firstName} ${participant.lastName} \n Time: ${participant.startTime}\n Overall Score: ${participant.getOverall(points)}\n");
+    final StringBuffer result = StringBuffer();
+    result.writeln("Participant: ${participant.firstName} ${participant.lastName}");
+    result.writeln("Time: ${participant.startTime}");
+    result.writeln("Overall Score: ${participant.getOverall(points)}");
+    // we should put the result of this loop in toString for save in text file
+    int i=0;
+    for(var questions in quiz.questions){
+    result.writeln("Q${i+1}. ${questions.title} - Score: ${questions.gotPoint}/${questions.point}");
+    i++;
+    }
+    return result.toString();
   }
-
-  
 
 
   File file = File("participantInfo.txt");

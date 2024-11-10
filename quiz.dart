@@ -13,5 +13,4 @@ class Quiz {
     participants.add(participant);
   }
 
-  
 }

@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'participant.dart';
 import 'quiz.dart';
@@ -21,9 +22,12 @@ void main() {
   quiz.addNewParticipant(participant);
 
   quiz.addNewQuestion(
-      SingleAnswer("What is 2+2?", ["1. 2", "2. 4", "3. 5"], 3, 2));
+      SingleAnswer("What is 2+2?", ["1. 2", "2. 4", "3. 5"], 3,0, 2));
   quiz.addNewQuestion(
-      MultipleAnswers("What is what?", ["1. 2", "2. 4", "3. 5"], 1, [2, 3]));
+      MultipleAnswers("What is what?", ["1. 2", "2. 4", "3. 5"], 1,0, [2, 3]));
+  quiz.addNewQuestion(
+    MultipleAnswers("Find sum of 1 to 10 and average of sum", 
+    ["1. 100","2. 50","3. 55", "4. 5.5"], 5,0, [3,4]));
 
   int score = 0;
   int points = 0;
@@ -38,40 +42,41 @@ void main() {
       int selected = int.parse(stdin.readLineSync()!);
 
       if (question.isCorrectAnswer(selected)) {
-        score = question.point;
+        question.gotPoint = question.point;
         participant.updateScore(score);
-
-        int point = question.point;
-        String scores = "$score / $point";
-        print(scores);
+        // I should add update score for each question 
+        //int point = question.point;
+        String scores = "${question.gotPoint} / ${question.point}";
+        print("score : $scores");
       } else {
-        score = 0;
-        participant.updateScore(score);
+        question.gotPoint = 0;
+        participant.updateScore(question.gotPoint);
 
         int point = question.point;
-        String scores = "$score / $point";
-        print(scores);
+        String scores = "${question.gotPoint} / $point";
+        print("score : $scores");
       }
 
-      participant.totalScore = score;
-    } else if (question is MultipleAnswers) {
+      //participant.totalScore = score;
+
+    } else if (question is MultipleAnswers){
       print("Enter your answer: ");
       List<String> selectedAns = stdin.readLineSync()!.split(RegExp(r",\s*"));
       List<int> selected = selectedAns.map(int.parse).toList();
 
       if (question.isCorrectAnswer(selected)) {
-        score = question.point;
-        participant.updateScore(score);
+        question.gotPoint = question.point;
+        participant.updateScore(question.gotPoint);
 
         int point = question.point;
-        String scores = "$score / $point";
+        String scores = "${question.gotPoint} / $point";
         print(scores);
       } else {
-        score = 0;
-        participant.updateScore(score);
+        question.gotPoint = 0;
+        participant.updateScore(question.gotPoint);
 
         int point = question.point;
-        String scores = "$score / $point";
+        String scores = "${question.gotPoint} / $point";
         print(scores);
       }
     }
@@ -79,9 +84,20 @@ void main() {
   print(points);
   participant.getOverall(points);
 
+  // we should put the result of this loop in toString for save in text file
+  int i=0;
+  for(var questions in quiz.questions){
+  print("${i+1}. ${questions.title} - Score: ${questions.gotPoint}/${questions.point}");
+  i++;
+  }
+
+  String toString(){
+    return("Participant: ${participant.firstName} ${participant.lastName} \n Time: ${participant.startTime}\n Overall Score: ${participant.getOverall(points)}\n");
+  }
+
   
 
+
   File file = File("participantInfo.txt");
-  file.writeAsString(
-      "Participant: ${participant.firstName} ${participant.lastName}\n Time: ${participant.startTime}\n Overall: ${participant.getOverall(points)}\n");
+  file.writeAsString(toString());
 }

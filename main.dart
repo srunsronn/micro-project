@@ -24,7 +24,7 @@ void main() {
   quiz.addNewQuestion(
       SingleAnswer("What is 2+2?", ["1. 2", "2. 4", "3. 5"], 3,0, 2));
   quiz.addNewQuestion(
-      MultipleAnswers("What is what?", ["1. 2", "2. 4", "3. 5"], 1,0, [2, 3]));
+      MultipleAnswers("find x that (x-1)(x-2)=0?", ["1. x=-1", "2. x=1", "3. x=2","4. x=-2"], 1,0, [2, 3]));
   quiz.addNewQuestion(
     MultipleAnswers("Find sum of 1 to 10 and average of sum", 
     ["1. 100","2. 50","3. 55", "4. 5.5"], 5,0, [3,4]));
@@ -44,7 +44,7 @@ void main() {
         question.gotPoint = question.point;
         participant.updateScore(question.gotPoint);
         // I should add update score for each question 
-        //int point = question.point;
+
         String scores = "${question.gotPoint} / ${question.point}";
         print("score : $scores");
       } else {
@@ -88,11 +88,11 @@ void main() {
     final StringBuffer result = StringBuffer();
     result.writeln("Participant: ${participant.firstName} ${participant.lastName}");
     result.writeln("Time: ${participant.startTime}");
-    result.writeln("Overall Score: ${participant.getOverall(points)}");
+    result.writeln("Overall Score: ${participant.getOverall(points)} points");
     // we should put the result of this loop in toString for save in text file
     int i=0;
     for(var questions in quiz.questions){
-    result.writeln("Q${i+1}. ${questions.title} - Score: ${questions.gotPoint}/${questions.point}");
+    result.writeln("Q${i+1}. ${questions.title} - Score: ${questions.gotPoint}/${questions.point} points\n");
     i++;
     }
     return result.toString();

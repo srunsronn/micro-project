@@ -6,6 +6,7 @@ class Question {
   int gotPoint;
 
   Question(this.title, this.optionAns, this.point,this.gotPoint);
+
 }
 
 class SingleAnswer extends Question {
@@ -24,11 +25,17 @@ class MultipleAnswers extends Question {
   MultipleAnswers(super.title, super.optionAns, super.point,super.gotPoint, this.correctAnswers);
 
   bool isCorrectAnswer(List<int> selectedAnswers) {
-  
+
     selectedAnswers.sort();
     correctAnswers.sort();
 
-    return selectedAnswers.length == correctAnswers.length && 
-        selectedAnswers.every((answer) => correctAnswers.contains(answer));
+    for(int i=0;i<correctAnswers.length;i++){
+      if(correctAnswers[i] != selectedAnswers[i]){
+        return false;
+      }
+    }
+
+    return true;
   }
 }
+

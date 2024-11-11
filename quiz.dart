@@ -12,5 +12,4 @@ class Quiz {
   void addNewParticipant(Participant participant) {
     participants.add(participant);
   }
-
 }
